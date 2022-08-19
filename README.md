@@ -6,13 +6,13 @@ The goal of this project is to place this script in a specific folder of the win
 
 After discovering that it was possible to copy files in the Windows installation, I had an idea to launch some tasks at the first launch of Windows to ease the installation process (Thanks the `sources\$OEM$` folder and OOBE commands).
 
-### \$OEM\$ folder
+### \\$OEM\\$ folder
 
 We can copy files to Windows installation media and have them copy to either the Windows Folder or System Drive During Installation. To do so, we need to store the files we want on the installation media, specifically:
 
-> `sources\$OEM\$$`
+ `sources\$OEM\$$`
 
-> `sources\$OEM\$1`
+ `sources\$OEM\$1`
 
 The first folder content will copied into the `C:\Windows` folder, 
 The second into the `C:\` root drive.
