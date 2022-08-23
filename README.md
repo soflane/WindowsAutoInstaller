@@ -86,3 +86,8 @@ Chocolatey is the second package manager, used for apps not found in WinGet repo
 # Sources 
 
 - [The \$OEM\$ Folder](https://dellwindowsreinstallationguide.com/the-oem-folder/)
+
+## Donations
+Whilst donations are appreciated, they are not expected, nor required.  If you want to buy me a drink, you can do so here:
+
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate/?hosted_button_id=V973AJPW7V5Q8)
