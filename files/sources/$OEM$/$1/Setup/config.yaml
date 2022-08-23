@@ -1,0 +1,167 @@
+Config:
+  #if u want to make pauses between reboots
+  debug: true
+
+  install_updates: false
+  install_drivers: false
+
+  hostname: HP-soflane
+  user_name: soflane
+    #display name
+  user_fullname:  soflane git
+  user_password: 
+  uac_ask_for_password: true        
+
+  chocolatey: false
+  winget: false 
+  #anydesk_custom_url: 
+  anydesk_password: 
+
+  wsl: no
+  wsl_version: 2
+
+
+  VCLibs_URL: https://shurl.tech/VCLibs.x64
+  WinGet_URL: https://aka.ms/getwinget 
+  XAML_Runtime_URL: https://shurl.tech/Microsoft.UI.Xaml
+
+
+
+  # Not working
+  #wsl_distribution: ubuntu
+  #user_create: yes
+
+
+#windows settings 
+Windows:
+  # 'no' for no wallpaper change
+  #wallpaper_path: false
+  Wallpaper_Path: 'C:\Windows\Web\Wallpaper\Custom\screen-center.jpg'
+  #Edge tabs coming into windows alt+tab
+  edge_alt_tab: disable
+  # icon, text, off
+  NewsAndInterest: text
+  # on, off
+  NewsAndInterestMouseHover: off
+  # button, bar, off
+  SearchBoxTaskbar: button
+  
+
+
+Network:
+  connect: true
+  ssid: WiFi 
+  password: youknow
+  # choose between 'none' 'WEP' 'TKIP' 'AES' 'GCMP256'
+  encryption: AES
+  #'open#shared#WPA#WPAPSK#WPA2#WPA2PSK#WPA3SAE#WPA3ENT192#OWE'
+  authentication: WPA2PSK
+
+wingetApps:
+
+#########################
+######## BASE ###########
+#########################
+
+  #- Adobe.Acrobat.Reader.64-bit               
+  #- Adobe.Acrobat.Reader.32-bit 
+  #- 7zip.7zip                                 
+  #- Mozilla.Firefox                           
+  #- Google.Chrome    
+  #- Dropbox.Dropbox                           
+  #- Google.Drive                            
+  #- Greenshot.Greenshot                       
+  #- Microsoft.Office                          
+  #- Microsoft.Teams    
+  #- Bitwarden.Bitwarden                        
+              
+
+########################################
+######## Communication/media ###########
+########################################
+
+  #- Apple.iTunes                              
+  #- Discord.Discord                           
+  #- Mp3tag.Mp3tag                             
+  #- Plex.Plex                                 
+  #- PowerSoftware.AnyBurn                     
+  #- Telegram.TelegramDesktop                  
+  - VideoLAN.VLC                              
+  #- WhatsApp.WhatsApp     
+  #- Zoom.Zoom                                 
+  
+
+#####################################
+######## Remote Softwares ###########
+#####################################
+
+  #- AnyDeskSoftwareGmbH.AnyDesk              
+  #- TeamViewer.TeamViewer
+  #- TeamViewer.TeamViewer.Host
+
+
+
+##################################
+######## Windows tools ###########
+##################################
+  #- Piriform.CCleaner                         
+  #- Malwarebytes.Malwarebytes                 
+
+#################################
+######## DevOps tools ###########
+#################################
+
+  #- Fork.Fork                                 
+  #- KDE.Falkon                                
+  #- Insecure.Nmap                             
+  #- Notepad++.Notepad++                       
+  #- Microsoft.VisualStudioCode                
+  #- Microsoft.PowerToys  
+  #- PuTTY.PuTTY                               
+  #- TimKosse.FileZillaClient                  
+  - Famatech.AdvancedIPScanner
+  #- Typora.Typora                             
+  #- WiresharkFoundation.Wireshark             
+
+  #- Microsoft.dotnetRuntime.6-x64             
+  #- Microsoft.dotnetRuntime.5-x86             
+  #- Microsoft.dotnetRuntime.5-x64             
+  #- Microsoft.dotnetRuntime.5-arm64           
+  #- Microsoft.dotnetRuntime.3-x86             
+  #- Microsoft.dotnetRuntime.3-x64             
+  #- Microsoft.dotNetFramework                 
+
+
+
+######################################
+######## Hardware Specific ###########
+######################################
+  #- Lenovo.SystemUpdate  
+  #- Logitech.Options                          
+
+##########################
+######## Other ###########
+##########################
+                             
+  #- Valve.Steam                               
+  #- DominikReichl.KeePass                     
+  
+
+
+  
+  
+  
+  
+  
+winStoreApps:
+  #- trello      (9NBLGGH4XXVW)                          
+  - 9NBLGGH4XXVW                              
+  - Spotify.Spotify   
+  - 9ncbcszsjrsb                       
+  
+chocoApps:
+  #- advanced-ip-scanner                       
+  #-  -core.extension                 
+  - hdtune                                    
+  #- unifiedremote                             
+
