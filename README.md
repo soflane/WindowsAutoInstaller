@@ -2,6 +2,8 @@
 
 The goal of this project is to place this script in a specific folder of the windows installation media and let it install everything you need at the first startup after windows install based on an YAML file. 
 
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate/?hosted_button_id=V973AJPW7V5Q8)
+
 ## A little story
 
 After discovering that it was possible to copy files in the Windows installation, I had an idea to launch some tasks at the first launch of Windows to ease the installation process (Thanks the `sources\$OEM$` folder and OOBE commands).
