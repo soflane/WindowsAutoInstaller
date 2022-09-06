@@ -9,17 +9,17 @@ function Install-NuGet {
     #Install NuGet Dependency
     if ((Get-PackageProvider -ListAvailable -Name NuGet)) {
         Write-Host "Version of NuGet installed = " (Get-PackageProvider -Name NuGet).version
-        Write-Log -Message "Version of NuGet installed =  $((Get-PackageProvider -Name NuGet).version)" -Level Information  -Path $global:logFile
+        Write-Log -Message "Version of NuGet installed =  $((Get-PackageProvider -Name NuGet).version)" -Level Information  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
     }
     else {
         try {
             Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force -Scope AllUsers 
             Write-Host "Nuget installed successfully = " (Get-PackageProvider -Name NuGet).version
-            Write-Log -Message "Nuget installed successfully =  $((Get-PackageProvider -Name NuGet).version)" -Level Information  -Path $global:logFile
+            Write-Log -Message "Nuget installed successfully =  $((Get-PackageProvider -Name NuGet).version)" -Level Information  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
         }
         catch [Exception] {
             Write-Warning "An error occurred during NuGet installation: $($_.Exception.Message)"
-            Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during NuGet installation : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+            Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during NuGet installation : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
             #exit
         }
     }
@@ -48,7 +48,7 @@ function Invoke-UpdateHandler {
             }
             catch [Exception] {
                 Write-Warning "An error occurred during windows update module import: $($_.Exception.Message)"
-                Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during windows update module import : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+                Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during windows update module import : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
                 return $false
             }
         }
@@ -76,7 +76,7 @@ function Invoke-UpdateHandler {
             }
             catch {
                 Write-Warning "An error occurred during Windows Update : $($_.Exception.Message)"
-                Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during Windows Update : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+                Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during Windows Update : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
             }
             #if ((get-ConfigValue("Config.install_drivers")) -eq $true){
             #    try{
@@ -84,7 +84,7 @@ function Invoke-UpdateHandler {
             #        Install-WindowsUpdate -Category "drivers" -AcceptAll -IgnoreReboot | Out-File $global:logFileDriversUpdate
             #    }catch{
             #        Write-Warning "An error occurred during Windows Update drivers installation : $($_.Exception.Message)"
-            #        Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during Windows Update drivers installation : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+            #        Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during Windows Update drivers installation : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
             #    }
             #}
         }
@@ -114,12 +114,12 @@ function enable-UAC {
         New-ItemProperty -Path $path -Name 'PromptOnSecureDesktop' -Value 1 -PropertyType DWORD -Force | Out-Null
         New-ItemProperty -Path $path -Name 'ValidateAdminCodeSignatures' -Value 0 -PropertyType DWORD -Force | Out-Null
         #New-ItemProperty -Path $path -Name 'FilterAdministratorToken' -Value 0 -PropertyType DWORD -Force | Out-Null
-        Write-Log -Message "UAC prompt enabled!" -Level Information  -Path $global:logFile
+        Write-Log -Message "UAC prompt enabled!" -Level Information  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
         Write-Host "UAC prompt enabled!" 
     }
     catch {
         Write-Warning "An error occurred during UAC Activation. $($_.Exception.Message)"
-        Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during UAC Activation. $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+        Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during UAC Activation. $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
     }
 }
 function install-Winget {
@@ -128,11 +128,11 @@ function install-Winget {
         Add-AppxPackage $url -ForceApplicationShutdown -ErrorAction Stop 
         if ($?) {
             Write-Host "Success on VCLib"
-            Write-Log -Message "Success on VCLibs installation" -Level Verbose  -Path $global:logFile
+            Write-Log -Message "Success on VCLibs installation" -Level Debug  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
         }
         else {
             Write-Host "Error on VCLib"            
-            Write-Log -Message "An unkown error occurred during VCLibs Install" -Level Error  -Path $global:logFile
+            Write-Log -Message "An unkown error occurred during VCLibs Install" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
 
             exit
         }
@@ -142,7 +142,7 @@ function install-Winget {
         $FailedItem = $_.ScriptStackTrace
         $FailedException = $_.Exception.GetType().FullName
         Write-Warning "An unkown error occurred during VCLibs Install : `n         $FailedException $FailedItem.`n         $ErrorMessage"  
-        Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during VCLibs Install: $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+        Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during VCLibs Install: $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
         exit
     }
     try {
@@ -151,13 +151,13 @@ function install-Winget {
         if ($?) {
             #Log info "Installation de Microsoft.UI.Xaml Réussie" $LogFileDependencies
             Write-Host "Success on Microsoft.UI.Xaml"
-            Write-Log -Message "Success on Microsoft.UI.Xaml Install." -Level Verbose  -Path $global:logFile
+            Write-Log -Message "Success on Microsoft.UI.Xaml Install." -Level Debug  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
 
         }
         else {
             #Log error "Echec de l'installation Microsoft.UI.Xaml : Erreur inconnue" $LogFileDependencies
             Write-Host "Error on Microsoft.UI.Xaml"
-            Write-Log -Message "An unkown error occurred during Microsoft.UI.Xaml Install." -Level Error  -Path $global:logFile
+            Write-Log -Message "An unkown error occurred during Microsoft.UI.Xaml Install." -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
         }
 
     }
@@ -166,7 +166,7 @@ function install-Winget {
         $FailedItem = $_.ScriptStackTrace
         $FailedException = $_.Exception.GetType().FullName
         Write-Warning "An error occurred during Microsoft.UI.Xaml installation : `n         $FailedException $FailedItem.`n         $ErrorMessage"  
-        Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during Microsoft.UI.Xaml Install: $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+        Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during Microsoft.UI.Xaml Install: $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
         #exit
         
     }
@@ -177,13 +177,13 @@ function install-Winget {
         if ($?) {
             #Log info "Installation de WinGet Réussie" $LogFileDependencies
             Write-Host "Success on WinGet"
-            Write-Log -Message "Success on WinGet Install." -Level Verbose  -Path $global:logFile
+            Write-Log -Message "Success on WinGet Install." -Level Debug  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
 
         }
         else {
             #Log error "Echec de l'installation WinGet : Erreur inconnue" $LogFileDependencies
             Write-Host "Error on WinGet"
-            Write-Log -Message "An unkown error occurred during WinGet Install." -Level Error  -Path $global:logFile
+            Write-Log -Message "An unkown error occurred during WinGet Install." -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
         }
 
     }
@@ -192,18 +192,18 @@ function install-Winget {
         $FailedItem = $_.ScriptStackTrace
         $FailedException = $_.Exception.GetType().FullName
         Write-Warning "An error occurred during WinGet installation : `n         $FailedException $FailedItem.`n         $ErrorMessage"  
-        Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during WinGet Install: $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+        Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during WinGet Install: $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
         #exit
         
     }
 }
 function Install-Choco {
     try {
-        Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+        Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
     }
     catch {
         Write-Warning "An error occurred during Chocolatey installation." 
-        Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during Chocolatey Install: $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+        Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during Chocolatey Install: $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
 
     }
 }
@@ -225,7 +225,7 @@ function install-wsl {
         }
         catch {
             Write-Warning "An error occurred during WSL default version setup : $($_.Exception.Message)"
-            Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during WSL default version setup : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+            Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during WSL default version setup : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
         }
         #if ((get-ConfigValue("Config.wsl_distribution")) -ne $false){
         #    ### en cours
@@ -241,7 +241,7 @@ function install-wsl {
         #    }
         #    catch {
         #        Write-Warning "An error occurred during Linux distribution install : $($_.Exception.Message)"
-        #        Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during Linux distribution install : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+        #        Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during Linux distribution install : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
         #    }
         #}
                
@@ -258,13 +258,13 @@ function enable-Feature {
         #Enable-WindowsOptionalFeature -FeatureName $Feature -Online -NoRestart
         Enable-WindowsOptionalFeature -FeatureName $Feature -Online -LogPath ($global:logPath + "\features.log") -NoRestart
         Write-Host "Success on $Feature Activation."
-        Write-Log -Message "Success on $Feature Activation." -Level Verbose  -Path $global:logFile
+        Write-Log -Message "Success on $Feature Activation." -Level Debug  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
 
 
     }
     catch {
         Write-Warning "An error occurred during the following feature activation : $Feature : $($_.Exception.Message)"
-        Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during the following feature activation : $Feature : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+        Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during the following feature activation : $Feature : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
     }
 
 
@@ -276,35 +276,64 @@ function Test-CustomAnydesk {
             c:\setup\AnyDesk.exe --install "c:\Program Files (x86)\AnyDesk" --start-with-win --silent --create-shortcuts --create-desktop-icon
             if (Test-Path -Path "c:\Program Files (x86)\AnyDesk\anydesk*.exe" -PathType Leaf) {
                 Write-Host "AnyDesk Custom client Successfully installed."
-                Write-Log -Message "AnyDesk Custom client Successfully installed." -Level Verbose  -Path $global:logFile
+                Write-Log -Message "AnyDesk Custom client Successfully installed." -Level Verbose  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
                 
             }
         }
         catch {
             Write-Warning "An error occurred during AnyDesk custom client installation."
-            Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during the AnyDesk Custom client installation : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+            Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during the AnyDesk Custom client installation : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
 
         }
     }
     elseif ((get-ConfigValue("Config.anydesk_custom_url")) -ne $false ) {
-        Invoke-WebRequest -Uri (get-ConfigValue("Config.anydesk_custom_url")) -OutFile "C:\anydesk.exe"
+        #Invoke-WebRequest -Uri (get-ConfigValue("Config.anydesk_custom_url")) -OutFile "C:\anydesk.exe"
+        $download = Invoke-WebRequest -Uri (get-ConfigValue("Config.anydesk_custom_url")) -UseBasicParsing
+        $content = [System.Net.Mime.ContentDisposition]::new($download.Headers["Content-Disposition"])
+        $fileName = $content.FileName
+        $filePath = 'c:\' + $fileName
+        $file = [System.IO.FileStream]::new($filePath, [System.IO.FileMode]::Create)
+        $file.Write($download.Content, 0, $download.RawContentLength)
+        $file.Close()
         try {
-            c:\AnyDesk.exe --install "c:\Program Files (x86)\AnyDesk" --start-with-win --silent --create-shortcuts --create-desktop-icon
-            if (Test-Path -Path "c:\Program Files (x86)\AnyDesk\anydesk*.exe" -PathType Leaf) {
-                Write-Host "AnyDesk Custom client Successfully installed."
-                Write-Log -Message "AnyDesk Custom client Successfully installed." -Level Verbose  -Path $global:logFile
-                
+            if ($fileName.EndsWith('msi')) {
+                $MSIArguments = @(
+                    "/i"
+                    ('"{0}"' -f $filePath)
+                    "/qn"
+                )
+                Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow 
+                if ($INSTALLED."DisplayName" -like "Anydesk*"){
+                    Write-Host "AnyDesk Custom MSI client Successfully installed."
+                    Write-Log -Message "AnyDesk Custom MSI client Successfully installed." -Level Verbose  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
+                }else {
+                    # TODO Throw error
+                }
             }
+            elseif ($fileName.EndsWith('exe')) {
+                c:\AnyDesk.exe --install "c:\Program Files (x86)\AnyDesk" --start-with-win --silent --create-shortcuts --create-desktop-icon
+                if (Test-Path -Path "c:\Program Files (x86)\AnyDesk\anydesk*.exe" -PathType Leaf) {
+                    Write-Host "AnyDesk Custom client Successfully installed."
+                    Write-Log -Message "AnyDesk Custom client Successfully installed." -Level Verbose  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
+                }
+                else {
+                    # TODO Throw error
+                }
+            }
+            else {
+                # TODO Throw error
+            }
+            
         }
         catch {
             Write-Warning "An error occurred during AnyDesk custom client installation."
-            Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during the AnyDesk Custom client installation : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+            Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during the AnyDesk Custom client installation : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
 
         }
     }
     else {
         Write-Host "No Custom AnyDesk File found. Continuing..."
-        Write-Log -Message "No Custom AnyDesk File found. Continuing..." -Level Information  -Path $global:logFile
+        Write-Log -Message "No Custom AnyDesk File found. Continuing..." -Level Information  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
 
     }
 }
@@ -339,7 +368,7 @@ function Invoke-AppHandler ($app) {
             }
             catch {
                 Write-Warning "An error occurred during plex firewall set. [$($_.Exception.GetType().FullName)]" 
-                Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during plex firewall set.: $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+                Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during plex firewall set.: $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
             }
         }
     }
@@ -377,20 +406,21 @@ function Invoke-AppInstaller {
         #Install WinGet if wanted
         if ((get-ConfigValue("config.winget")) -eq $true) {
             Write-Host "Installing WinGet..."
-            Write-Log -Message "Installing WinGet..." -Level Verbose  -Path $global:logFile
+            Write-Log -Message "Installing WinGet..." -Level Verbose  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
             install-Winget
         }
         else {
             Write-Host "Skipping WinGet Installation..."
-            Write-Log -Message "Skipping WinGet Installation..." -Level Information  -Path $global:logFile
+            Write-Log -Message "Skipping WinGet Installation..." -Level Information  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
             #Start-Sleep 20 
         }
         #Install chocolatey if wanted
         if ((get-ConfigValue("config.chocolatey")) -eq $true) {
             Install-Choco
-        }else {
+        }
+        else {
             Write-Host "Skipping Chocolatey Installation..."
-            Write-Log -Message "Skipping Chocolatey Installation..." -Level Information  -Path $global:logFile
+            Write-Log -Message "Skipping Chocolatey Installation..." -Level Information  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
             #Start-Sleep 20 
         }        
         # Install WinGet Applications
@@ -400,10 +430,10 @@ function Invoke-AppInstaller {
             do {
                 try {
                     Write-Host "Installing WinGet Apps..."
-                    Write-Log -Message "Installing WinGet Apps..." -Level Information  -Path $global:logFile
+                    Write-Log -Message "Installing WinGet Apps..." -Level Information  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
                     foreach ( $node in (get-ConfigValue("wingetApps")).Split(";") ) {
                         write-host "Try to install $node ..."
-                        Write-Log -Message "Try to install $node ..." -Level Verbose  -Path $global:logFile
+                        Write-Log -Message "Try to install $node ..." -Level Verbose  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
                         if ($node -ne "") {
                             $global:installs.nb++
                             $listApp = winget search --accept-source-agreements --source "winget" --id $node 
@@ -411,7 +441,7 @@ function Invoke-AppInstaller {
                                 winget install  --silent --accept-package-agreements --accept-source-agreements --id $node
                                 if ([String]::Join("", (winget list --id $node)).Contains($node)) {
                                     Write-host "Installed :  $node"
-                                    Write-Log -Message "Installed :  $node" -Level Information  -Path $global:logFile
+                                    Write-Log -Message "Installed :  $node" -Level Information  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
                                     $global:installs.success++
                                     $null = Invoke-AppHandler ($node)
                                     $Stoploop = $false
@@ -420,14 +450,14 @@ function Invoke-AppInstaller {
                                 else {
                                     $global:installs.errors++
                                     Write-Host "Install error : $line"
-                                    Write-Log -Message "Install error : $line" -Level Information  -Path $global:logFile
+                                    Write-Log -Message "Install error : $line" -Level Information  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
                                     $global:InstallErrors.add($node)
                                 }
                             }
                             else {
                                 $global:installs.skipped++
                                 Write-host "Not installed :  $node : NOT FOUND"
-                                Write-Log -Message "Not installed :  $node : NOT FOUND" -Level Information  -Path $global:logFile                        
+                                Write-Log -Message "Not installed :  $node : NOT FOUND" -Level Information  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))                        
                                 $global:InstallSkipped.add($node)
                             }
                     
@@ -440,7 +470,7 @@ function Invoke-AppInstaller {
                     # TODO Accept Store licence agreement if wanted    
                     #foreach ( $node in (get-ConfigValue("winStoreApps")).Split(";") ) {
                     #    write-host "Try to install STORE app $node ..."
-                    #    Write-Log -Message "Try to install STORE app $node ..." -Level Verbose  -Path $global:logFile
+                    #    Write-Log -Message "Try to install STORE app $node ..." -Level Verbose  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
                     #    if ($node -ne "") {
                     #        $global:installs.nb++
                     #        $listApp = winget search --source msstore --accept-source-agreements --source "winget" --id $node 
@@ -448,7 +478,7 @@ function Invoke-AppInstaller {
                     #            winget install  --silent --accept-package-agreements --accept-source-agreements --id $node
                     #            if ([String]::Join("", (winget list --id $node)).Contains($node)) {
                     #                Write-host "Installed STORE app :  $node"
-                    #                Write-Log -Message "Installed STORE app :  $node" -Level Information  -Path $global:logFile
+                    #                Write-Log -Message "Installed STORE app :  $node" -Level Information  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
                     #                $global:installs.success++
                     
     
@@ -458,40 +488,40 @@ function Invoke-AppInstaller {
                     #            else {
                     #                $global:installs.errors++
                     #                Write-Host "Install STORE app error : $line"
-                    #                Write-Log -Message "Install STORE app error : $line" -Level Information  -Path $global:logFile
+                    #                Write-Log -Message "Install STORE app error : $line" -Level Information  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
                     #                $global:InstallErrors.add($node)
                     #            }
                     #        }
                     #        else {
                     #            $global:installs.skipped++
                     #            Write-host "Not installed STORE app :  $node : NOT FOUND"
-                    #            Write-Log -Message "Not installed STORE app :  $node : NOT FOUND" -Level Information  -Path $global:logFile                        
+                    #            Write-Log -Message "Not installed STORE app :  $node : NOT FOUND" -Level Information  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))                        
                     #            $global:InstallSkipped.add($node)
                     #        }
                     #
                     #    }
                     #}#End Foreach
                     $Stoploop = $true
-                    Write-Log -Message "Winget STORE apps install Job completed" -Level Information  -Path $global:logFile
+                    Write-Log -Message "Winget STORE apps install Job completed" -Level Information  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
             
 
                 }
                 catch [System.Management.Automation.CommandNotFoundException] {
                     if ($Retrycount -gt 3) {
                         Write-Warning "Could not invoke WinGet after 3 retries."
-                        Write-Log -Message "[$($_.Exception.GetType().FullName)] Could not invoke WinGet after 3 retries : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+                        Write-Log -Message "[$($_.Exception.GetType().FullName)] Could not invoke WinGet after 3 retries : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
                         $Stoploop = $true
                     }
                     else {
                         $Retrycount = $Retrycount + 1
                         Write-Host "Winget seems to be not installed, SHOULD BE (Shame on you)! installing..."
-                        Write-Log -Message "Winget seems to be not installed, SHOULD BE (Shame on you)! installing..." -Level Warning  -Path $global:logFile
+                        Write-Log -Message "Winget seems to be not installed, SHOULD BE (Shame on you)! installing..." -Level Warning  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
                         Install-WinGet
                     }
                 }
                 catch {
                     Write-Warning "Not handled Exception (error)"
-                    Write-Log -Message "[$($_.Exception.GetType().FullName)] Not handled Exception : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+                    Write-Log -Message "[$($_.Exception.GetType().FullName)] Not handled Exception : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
         
                     $Stoploop = $true
                 }
@@ -506,14 +536,14 @@ function Invoke-AppInstaller {
         #}
         #catch {
         #    Write-Warning "An error occurred during reboot registry key set." 
-        #    Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+        #    Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
         #}
         #END First round
     }
     #BEGIN second round
     else {
         Write-Host "Starting invoke second round App installer..."
-        Write-Log -Message "Starting invoke second round App installer..." -Level Information  -Path $global:logFile
+        Write-Log -Message "Starting invoke second round App installer..." -Level Information  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
 
         if ((get-ConfigValue("config.wsl")) -eq $true) {
             Install-wsl -SecondRound
@@ -525,7 +555,7 @@ function Invoke-AppInstaller {
         #Install Chocolatey apps if asked
         if ((get-ConfigValue("config.chocolatey")) -eq $true) {
             Write-Host "Installing Chocolatey Apps..."
-            Write-Log -Message "Installing Chocolatey Apps..." -Level Information  -Path $global:logFile
+            Write-Log -Message "Installing Chocolatey Apps..." -Level Information  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
             $apps = get-ConfigValue("chocoApps")
             try {
                 if ($apps.Chars($apps.Length - 1) -eq ";") { $apps = ($apps.TrimEnd(";")) }
@@ -534,7 +564,7 @@ function Invoke-AppInstaller {
                 }
                 else {
                     Write-Host "No apps selected, Skipping Chocolatey apps..."
-                    Write-Log -Message "No apps selected, Skipping Chocolatey apps..." -Level Information  -Path $global:logFile
+                    Write-Log -Message "No apps selected, Skipping Chocolatey apps..." -Level Information  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
                 }
                 
                 
@@ -543,13 +573,13 @@ function Invoke-AppInstaller {
             }
             catch {
                 Write-Warning "An error occurred during Chocolatey apps installation : $($_.Exception.Message)"
-                Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during Chocolatey apps installation : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+                Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during Chocolatey apps installation : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
             }
 
         }
         else {
             Write-Host "Skipping Chocolatey apps..."
-            Write-Log -Message "Skipping Chocolatey apps..." -Level Information  -Path $global:logFile
+            Write-Log -Message "Skipping Chocolatey apps..." -Level Information  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
         }
     
     
@@ -609,7 +639,7 @@ function Invoke-SettingsWorker {
     }
     catch {
         Write-Warning "An error occurred during hostname set : [$($_.Exception.GetType().FullName)]" 
-        Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during hostname set : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+        Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during hostname set : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
     }
     # Set Wallpaper
     try {
@@ -630,7 +660,7 @@ function Invoke-SettingsWorker {
     }
     catch {
         Write-Warning "An error occurred during wallpaper set : [$($_.Exception.GetType().FullName)]" 
-        Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during wallpaper set : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+        Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during wallpaper set : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
     }try {
         if ( (get-ConfigValue("Windows.edge_alt_tab")) -ne $false ) {
             if ( (get-ConfigValue("Windows.edge_alt_tab")).toLower() -eq 'disable' ) {
@@ -644,7 +674,7 @@ function Invoke-SettingsWorker {
     }
     catch {
         Write-Warning "An error occurred during alt tab edge behavior set : [$($_.Exception.GetType().FullName)]" 
-        Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during alt tab edge behavior set : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+        Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during alt tab edge behavior set : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
     }
     # If Operating System is Windows 10
     if ((Get-WmiObject -class Win32_OperatingSystem).Caption.Contains('Windows 10')) {
@@ -655,18 +685,18 @@ function Invoke-SettingsWorker {
                 off {
                     Set-ItemProperty -ErrorAction Stop -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search -Name SearchBoxTaskbarMode -Value 0 -Type DWord -Force
                     Write-Host "Set Search box mode into NO"
-                    Write-Log -Message "Set Search box mode into NO" -Level Information  -Path $global:logFile
+                    Write-Log -Message "Set Search box mode into NO" -Level Information  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
                 
                 }
                 button {
                     Set-ItemProperty -ErrorAction Stop -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search -Name SearchBoxTaskbarMode -Value 1 -Type DWord -Force
                     Write-Host "Set Search box mode into Button"
-                    Write-Log -Message "Set Search box mode into Button" -Level Information  -Path $global:logFile
+                    Write-Log -Message "Set Search box mode into Button" -Level Information  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
                 }
                 bar {
                     Set-ItemProperty -ErrorAction Stop -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search -Name SearchBoxTaskbarMode -Value 2 -Type DWord -Force
                     Write-Host "Set Search box mode into Bar"
-                    Write-Log -Message "Set Search box mode into Bar" -Level Information  -Path $global:logFile
+                    Write-Log -Message "Set Search box mode into Bar" -Level Information  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
                     
                 }
                 default {
@@ -676,7 +706,7 @@ function Invoke-SettingsWorker {
         }
         catch {
             Write-Warning "An error occurred during taskbar search box set : [$($_.Exception.GetType().FullName)]" 
-            Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during taskbar search box set : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+            Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during taskbar search box set : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
         }
         try {
             if ((get-ConfigValue("Windows.NewsAndInterest")) -ne $false -and (get-ConfigValue("Windows.NewsAndInterestMouseHover")) -ne $false ) {
@@ -691,17 +721,17 @@ function Invoke-SettingsWorker {
                     text {
                         Set-ItemProperty -ErrorAction Stop -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Feeds -Name ShellFeedsTaskbarViewMode -Value 0 -Type DWord -Force
                         Write-Host "news and interest Shows icon and text"
-                        Write-Log -Message "news and interest Shows icon and text" -Level Information  -Path $global:logFile
+                        Write-Log -Message "news and interest Shows icon and text" -Level Information  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
                     }
                     icon {
                         Set-ItemProperty -ErrorAction Stop -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Feeds -Name ShellFeedsTaskbarViewMode -Value 1 -Type DWord -Force
                         Write-Host "news and interest Shows icon only"
-                        Write-Log -Message "news and interest Shows icon only" -Level Information  -Path $global:logFile
+                        Write-Log -Message "news and interest Shows icon only" -Level Information  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
                     }
                     off {
                         Set-ItemProperty -ErrorAction Stop -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Feeds -Name ShellFeedsTaskbarViewMode -Value 2 -Type DWord -Force
                         Write-Host "news and interest Hide News and Interests"
-                        Write-Log -Message "news and interest Hide News and Interests" -Level Information  -Path $global:logFile
+                        Write-Log -Message "news and interest Hide News and Interests" -Level Information  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
                     }
                     default {
                         Write-Host "Skipping news and interest setting..."
@@ -712,12 +742,12 @@ function Invoke-SettingsWorker {
                     off {
                         Set-ItemProperty -ErrorAction Stop -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Feeds -Name ShellFeedsTaskbarOpenOnHover -Value 0 -Type DWord -Force
                         Write-Host "news and interest mouseover OFF"
-                        Write-Log -Message "news and interest mouseover OFF" -Level Information  -Path $global:logFile
+                        Write-Log -Message "news and interest mouseover OFF" -Level Information  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
                     }
                     on {
                         Set-ItemProperty -ErrorAction Stop -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Feeds -Name ShellFeedsTaskbarOpenOnHover -Value 1 -Type DWord -Force
                         Write-Host "news and interest mouseover ON"
-                        Write-Log -Message "news and interest mouseover ON" -Level Information  -Path $global:logFile
+                        Write-Log -Message "news and interest mouseover ON" -Level Information  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
                     }
                     default {
                         Write-Host "Skipping news and interest mouseover setting..."
@@ -727,7 +757,7 @@ function Invoke-SettingsWorker {
         }
         catch {
             Write-Warning "An error occurred during news and interest set : [$($_.Exception.GetType().FullName)]" 
-            Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during news and interest set : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+            Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during news and interest set : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
         }
             
     }#end If WIN 10
@@ -747,7 +777,7 @@ function Invoke-SettingsWorker {
         }
         catch {
             Write-Warning "An error occurred during username change : $($_.Exception.Message)"
-            Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during username change : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+            Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during username change : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
         }
     }
     # Set password 
@@ -764,14 +794,14 @@ function Invoke-SettingsWorker {
         }
         catch {
             Write-Warning "An error occurred during user password change : $($_.Exception.Message)"
-            Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during user password change : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+            Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during user password change : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
         }
         try {
             Set-ItemProperty -ErrorAction Stop -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name AutoAdminLogon -Value 0 -Type DWord -Force
         }
         catch {
             Write-Warning "An error occurred during user autologon disable  : $($_.Exception.Message)"
-            Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during user autologon disable : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+            Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during user autologon disable : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
         }
     }
     # TODO Disable Autolog DONE
@@ -868,7 +898,7 @@ function Set-ConsoleSizeAndPosition {
 }
 #----------------------------------------- END Gui/Console Related --------------------------------------------
 #------------------------------------------ PRE CHECKS/INIT FUNCT ---------------------------------------------
-function Create-LogFolder {
+function Set-LogFolder {
     if (Test-Path -Path $global:logPath) {
         Write-Host "Log folder already created"
         
@@ -876,6 +906,11 @@ function Create-LogFolder {
     else {
         Write-Host "Creating log folder..."
         $null = New-Item -Type Directory -Path $global:logPath -Force
+        if ((get-ConfigValue("Config.debug")) -ne $false) {
+            Write-Host "Creating log folder..."
+            $path = $global:logPath + "\DEBUG"
+            $null = New-Item -Type Directory -Path $path -Force
+        }
     }
 }
 function Get-Requirements {
@@ -897,17 +932,17 @@ function Get-Requirements {
             Import-Module C:\tmp\powershell-yaml -Global -ErrorAction Stop -Force 
             Set-ExecutionPolicy -ExecutionPolicy $policy -Force
             ##https://michlstechblog.info/blog/powershell-install-a-nupkg-module-offline/
-            Write-Log -Message "Folder created, importing from local drive" -Level Verbose  -Path $global:logFile
+            Write-Log -Message "Folder created, importing from local drive" -Level Verbose  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
 
         }
         # Done
-        Write-Log -Message "LOCAL Modules Import successful" -Level Verbose  -Path $global:logFile
+        Write-Log -Message "LOCAL Modules Import successful" -Level Verbose  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
         Write-Host "LOCAL Modules Import successful"
 
     }
     catch {
         Write-Warning "An error occurred during LOCAL Modules Import : $($_.Exception.Message)"
-        Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during LOCAL Modules Import : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+        Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during LOCAL Modules Import : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
 
         exit
     }
@@ -923,20 +958,20 @@ function Get-Requirements-online {
         #Import deps psm1 files
         try {
             $global:depsPath + "*" | Get-ChildItem -include '*.psm1' | Import-Module -Global -ErrorAction Stop -Force 
-            Write-Log -Message "PSM Modules Import successful (Requirements-online-function)" -Level Verbose  -Path $global:logFile
+            Write-Log -Message "PSM Modules Import successful (Requirements-online-function)" -Level Verbose  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
             Write-Host "PSM Modules Import successful (Requirements-online-function)"
 
         }
         catch {
             Write-Warning "An error occurred during PSM Modules Import (Requirements-online-function) : $($_.Exception.Message)"
-            Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during PSM Modules Import (Requirements-online-function): $Feature : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+            Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during PSM Modules Import (Requirements-online-function): $Feature : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
             exit
         }
         Install-NuGet
         #Install PSGallery necessery modules
         if (Get-Module -ListAvailable -Name powershell-yaml) {
             Write-Host "Version of powershell-yaml installed = " (Get-InstalledModule -Name powershell-yaml).version
-            Write-Log -Message "Version of powershell-yaml installed =  $((Get-InstalledModule -Name powershell-yaml).version)" -Level Information  -Path $global:logFile
+            Write-Log -Message "Version of powershell-yaml installed =  $((Get-InstalledModule -Name powershell-yaml).version)" -Level Information  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
 
         
         }
@@ -944,28 +979,29 @@ function Get-Requirements-online {
             try {
                 Install-Module -Name powershell-yaml -Force  
                 Write-Host "powershell-yaml installed successfully = " (Get-InstalledModule -Name powershell-yaml).version
-                Write-Log -Message "powershell-yaml installed successfully =  $((Get-InstalledModule -Name powershell-yaml).version)" -Level Information  -Path $global:logFile
+                Write-Log -Message "powershell-yaml installed successfully =  $((Get-InstalledModule -Name powershell-yaml).version)" -Level Information  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
 
 
             }
             catch [Exception] {
                 Write-Warning "An error occurred during ONLINE module import: $($_.Exception.Message)"
-                Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during ONLINE module import : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+                Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during ONLINE module import : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
  
                 exit
             }
         }
-    }else {
+    }
+    else {
         #Import deps psm1 files
         try {
-            $global:depsPath + "*" | gci -include '*.psm1' | Import-Module -Global -ErrorAction Stop -Force 
-            Write-Log -Message "Modules LOCAL Import successful after reboot" -Level Verbose  -Path $global:logFile
+            $global:depsPath + "*" | Get-ChildItem -include '*.psm1' | Import-Module -Global -ErrorAction Stop -Force 
+            Write-Log -Message "Modules LOCAL Import successful after reboot" -Level Verbose  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
             Write-Host "Modules LOCAL Import successful after reboot."
 
         }
         catch {
             Write-Warning "An error occurred during LOCAL Modules Import after reboot: $($_.Exception.Message)"
-            Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during LOCAL Modules Import after reboot: $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+            Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during LOCAL Modules Import after reboot: $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
             exit
         }
     }
@@ -974,14 +1010,14 @@ function Get-Requirements-online {
 
 }
 function Get-YamlFile {
-    if (Test-Path -Path ".\config.yaml" -PathType Leaf) {$yamlPath = ".\config.yaml"}
-    if (Test-Path -Path "c:\setup\config.yaml" -PathType Leaf) {$yamlPath = "c:\setup\config.yaml"}
-    if (Test-Path -Path "c:\config.yaml" -PathType Leaf) {$yamlPath = "c:\config.yaml"}
+    if (Test-Path -Path ".\config.yaml" -PathType Leaf) { $yamlPath = ".\config.yaml" }
+    if (Test-Path -Path "c:\setup\config.yaml" -PathType Leaf) { $yamlPath = "c:\setup\config.yaml" }
+    if (Test-Path -Path "c:\config.yaml" -PathType Leaf) { $yamlPath = "c:\config.yaml" }
     
     try {
         [string[]]$fileContent = Get-Content -ErrorAction Stop $yamlPath
         Write-Host "YAML Import successful"
-        Write-Log -Message "YAML Import successful" -Level Verbose  -Path $global:logFile
+        Write-Log -Message "YAML Import successful" -Level Verbose  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
 
 
     }
@@ -989,13 +1025,13 @@ function Get-YamlFile {
         Write-Warning "Specified YAML file not found, trying default one."
         try {
             [string[]]$fileContent = Get-Content -ErrorAction Stop "C:\config.yaml"
-            Write-Host "YAML Import successful"
-            Write-Log -Message "YAML Import successful" -Level Verbose  -Path $global:logFile
+            Write-Host "YAML Import successful2"
+            Write-Log -Message "YAML Import successful" -Level Verbose  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
 
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             Write-Warning "An error occurred during YAML import: $($_.Exception.Message)"
-            Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during YAML import: $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+            Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during YAML import: $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
             #$_.Exception.GetType().FullName
             exit
         }
@@ -1003,7 +1039,7 @@ function Get-YamlFile {
     }
     catch {
         Write-Warning "An error occurred during YAML import: $($_.Exception.Message)"
-        Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during YAML import: $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+        Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during YAML import: $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
 
         exit
     }
@@ -1020,7 +1056,7 @@ function Add-RegPath {
         try {
             Set-ItemProperty -ErrorAction Stop -Name init -Path "$($global:RegPath)$($global:Regname)" -Value done
             Write-Host "Registry key created!"
-            Write-Log -Message "Registry key created!" -Level Verbose  -Path $global:logFile
+            Write-Log -Message "Registry key created!" -Level Verbose  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
 
             $tries = 3;
 
@@ -1028,19 +1064,19 @@ function Add-RegPath {
         catch [System.Management.Automation.ItemNotFoundException] {
             $tries = $tries + 1
             Write-Host "Creating registry path..."
-            Write-Log -Message "Creating registry path..." -Level Verbose  -Path $global:logFile
+            Write-Log -Message "Creating registry path..." -Level Verbose  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
 
             try {
                 $null = New-Item -Path $global:RegPath -Name $global:Regname -Force
                 Set-ItemProperty -ErrorAction Stop -Name init -Path  "$($global:RegPath)$($global:Regname)" -Value created
                 Write-Host "Registry key already created!"
-                Write-Log -Message "Registry key already created!" -Level Verbose  -Path $global:logFile
+                Write-Log -Message "Registry key already created!" -Level Debug  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
 
                 $tries = 3
             }
             catch {
                 Write-Warning "Creating registry path Error...  $($_.Exception.Message)"
-                Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during registry path creation: $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+                Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during registry path creation: $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
 
             }
             
@@ -1048,7 +1084,7 @@ function Add-RegPath {
         catch { 
             $tries = $tries + 1
             Write-Warning "Creating registry path unkown Error...  $($_.Exception.Message)"
-            Write-Log -Message "[$($_.Exception.GetType().FullName)] An unkown error occurred during registry path creation: $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+            Write-Log -Message "[$($_.Exception.GetType().FullName)] An unkown error occurred during registry path creation: $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
 
         }
     }
@@ -1057,13 +1093,13 @@ function Remove-RegPath {
     try {
         Remove-Item -Path "$($global:RegPath)$($global:Regname)" -Recurse
         Write-Host "Registry key Deleted!"
-        Write-Log -Message "Registry key already Deleted!" -Level Verbose  -Path $global:logFile
+        Write-Log -Message "Registry key already Deleted!" -Level Verbose  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
 
 
     }
     catch {
         Write-Warning "An unkown error occurred during registry deletion...  $($_.Exception.Message)"
-        Write-Log -Message "[$($_.Exception.GetType().FullName)] An unkown error occurred during registry deletion: $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+        Write-Log -Message "[$($_.Exception.GetType().FullName)] An unkown error occurred during registry deletion: $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
 
     }
 
@@ -1082,7 +1118,7 @@ function set-Config {
                 }
                 catch {
                     Write-Warning "An error occurred during registry variables initalization :  $($_.Exception.Message)"
-                    Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during registry variables initalization : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+                    Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during registry variables initalization : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
 
                      
                 }
@@ -1111,7 +1147,7 @@ function set-Config {
         }
         catch {
             Write-Warning "An error occurred during registry APPS variables initalization :  $($_.Exception.Message)"
-            Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during registry APPS variables initalization : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+            Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during registry APPS variables initalization : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
 
             
         }
@@ -1133,7 +1169,7 @@ function wait-for-network ($tries) {
         if ( $tries -gt 0 -and $try++ -ge $tries ) {
             throw "Network unavaiable after $try tries."
             Write-Warning "NO NETWORK CONNECTION, ABORTING..."
-            Write-Log -Message "NO NETWORK CONNECTION, ABORTING..." -Level Error  -Path $global:logFile
+            Write-Log -Message "NO NETWORK CONNECTION, ABORTING..." -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
             exit
 
         }
@@ -1150,12 +1186,19 @@ function wait-for-network ($tries) {
         
     }
 }
+function Invoke-InitSetupScript {
+    # https://ss64.com/nt/powercfg.html
+    #Powercfg /Change monitor-timeout-ac 60
+    Powercfg /Change standby-timeout-ac 0
+}
 function Invoke-EndSetupScript {
     #
     
-    Set-LogCount
+    
     Enable-UAC
     set-ConfigValue -paramName "script.init" -paramValue "finish"
+    Powercfg /Change standby-timeout-ac 120
+    Set-LogCount
     
     #https://docs.microsoft.com/en-us/troubleshoot/windows-server/user-profiles-and-logon/turn-on-automatic-logon
 }
@@ -1176,7 +1219,7 @@ function set-ConfigValue($paramName, $paramValue) {
     }
     catch {
         Write-Warning "An error occurred during registry key write: $paramName :  $($_.Exception.Message)"
-        Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during registry key write: $paramName : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+        Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during registry key write: $paramName : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
         
         # write-host $_.Exception.GetType().FullName
     }
@@ -1193,16 +1236,17 @@ function get-ConfigValue($paramName) {
     catch {
         #if ($paramName.toLower() -eq "script.init") { 
         #    Write-Warning "An error occurred during registry key init script retrival: $paramName. Can be normal in some case. Check log in case of doubt"
-        #    Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during registry key init script retrival: $paramName : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Information  -Path $global:logFile
+        #    Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during registry key init script retrival: $paramName : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Information  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
         #    return $false 
         #}
-        if ($paramName.toLower() -eq "script.init" -Or $paramName.toLower().Contains("anydesk_") -Or $paramName.toLower().Contains("windows") -Or $paramName.toLower() -eq "config.debug") { return $false }
-        if ($paramName.toLower() -eq "config.install_updates") { return $true }
-        else {
+        #if ($paramName.toLower() -eq "script.init" -Or $paramName.toLower().Contains("anydesk_") -Or $paramName.toLower().Contains("windows") -Or $paramName.toLower() -eq "config.debug" -Or $paramName.toLower() -eq "Config.hostname" -Or $paramName.toLower() -eq "Config.user_password") { return $false }
+        if ($paramName.toLower() -eq "config.vclibs_url" -Or $paramName.toLower() -eq "config.winget_URL" -Or $paramName.toLower() -eq "config.xaml_runtime_url" ) { 
             Write-Warning "An error occurred during registry key retrival: $paramName. Can be normal in some case. Check log in case of doubt"
-            Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during registry key retrival: $paramName : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
-            return $false
+            Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during registry key retrival: $paramName : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
+            return $false 
         }
+        if ($paramName.toLower() -eq "config.install_updates") { return $true }
+        else { return $false }
         
         # write-host $_.Exception.GetType().FullName
     }
@@ -1213,9 +1257,17 @@ function set-LogCount {
     #    [Parameter(Mandatory=$true)]
     #    [String]$Path
     #)
+    if (-not (get-ConfigValue("script.init"))){
+
+    }
+
     $path = $global:logFile 
     $line = "======================================  Summary  ======================================"
     $line | Out-File -FilePath $global:logFile -Append
+    if (-not (get-ConfigValue("script.init"))){
+        $line = "                                       First run"
+        $line | Out-File -FilePath $global:logFile -Append 
+    }
     if ([int]$global:logCounter.warnings -eq 0 -And [int]$global:logCounter.errors -eq 0) {
         $line = "                       Everything happened like a charm."
         $line | Out-File -FilePath $global:logFile -Append
@@ -1248,12 +1300,12 @@ function Set-ConsoleSizeAndPosition {
     
     $consoleHWND = [Console.Window]::GetConsoleWindow();
     #$consoleHWND
-    [Console.Window]::MoveWindow($consoleHWND,$X,$Y,$W,$H);
+    [Console.Window]::MoveWindow($consoleHWND, $X, $Y, $W, $H);
 }
 
 #------------------------------------------ END COMMON funct ------------------------------------------------------
 
-#------------------------------------------        MAIN            ---------------------------------------------
+#------------------------------------------        INIT            ---------------------------------------------
 function init {
     ## Save the current execution policy...
     #$currPolicy = Get-ExecutionPolicy
@@ -1267,7 +1319,7 @@ function init {
     [String]$global:logFile = $global:logPath + "\Soflane-script.log"
     [String]$global:logFileAppsInstaller = $global:logPath + "\AppsInstaller.log"
     [String]$global:logFileWinUpdate = $global:logPath + "\WindowsUpdate.log"
-    [String]$global:logFileDriversUpdate = $global:logPath + "\Drivers.log"
+    #[String]$global:logFileDriversUpdate = $global:logPath + "\Drivers.log"
     [hashtable]$global:logCounter = @{ nb = 0; errors = 0; warnings = 0 }
     [hashtable]$global:installs = @{ nb = 0; toMake = 0; errors = 0; success = 0; skipped = 0 }
     [System.Collections.ArrayList]$global:InstallErrors = @()
@@ -1275,17 +1327,17 @@ function init {
     $global:yaml = $null
     $global:DistributionsAvailable = @("ubuntu", "opensuse-42", "opensuse", "debian", "kali", "kali-linux", "sles-12", "Ubuntu-16.04", "Ubuntu-18.04", "Ubuntu-20.04")
 
-    if (Test-Path -Path "c:\setup\deps\*.psm1" -type leaf ){
+    if (Test-Path -Path "c:\setup\deps\*.psm1" -type leaf ) {
         [string]$global:depsPath = "C:\setup\deps\"
-    } 
-    if (Test-Path -Path ".\*.psm1" -type leaf) {
+    } elseif (Test-Path -Path ".\*.psm1" -type leaf) {
         [string]$global:depsPath = ".\"
     }
 
 
     if (-not (get-ConfigValue("script.init"))) {
         Write-Host "Initializing Script..."
-        Create-LogFolder
+        invoke-InitSetupScript
+        Set-LogFolder
         if ( (Test-UpLink) -eq $true ) { Get-Requirements-online } else { Get-Requirements }
         Add-RegPath
         Get-YamlFile
@@ -1300,21 +1352,26 @@ function init {
         Write-Host "reboot follow up key set"
 
         
-    }else {
+    }
+    else {
         if ( (Test-UpLink) -eq $true ) { Get-Requirements-online -SecondRound } else { Get-Requirements -SecondRound }
         wait-for-network(3)
         get-installSummary
         write-Host "Second round is starting..."
-        Write-Log -Message "Second round is starting..." -Level Information  -Path $global:logFile
+        Write-Log -Message "Second round is starting..." -Level Information  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
         Invoke-AppInstaller -SecondRound
         #Windows Settings
         Invoke-UpdateHandler -SecondRound
         Invoke-SettingsWorker 
         Invoke-EndSetupScript
-        set-LogCount
     }
 }
-#------------------------------------------      END MAIN        ---------------------------------------------
+#------------------------------------------      END INIT        ---------------------------------------------
+
+
+
+#------------------------------------------        Main            ---------------------------------------------
+
 Set-ConsoleSizeAndPosition 550 150 800 500
 Write-Host @"
 Welcome to Soflane's Windows unattended script
@@ -1326,22 +1383,26 @@ PRESS ANY KEY TO START THE MAGIC
 "@
 TIMEOUT 90
 init
-if ((get-ConfigValue("Config.debug")) -eq $true) {
-    cmd /c Pause
+if ((get-ConfigValue("Config.debug")) -ne $false ) {
+    #cmd /c Pause
+    Write-Log -Message "PAUSE CHECK" -Level Verbose  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
+    TIMEOUT 90
 }
 
 if ((get-ConfigValue("script.init")).Contains('finish')) {
     
-    if ((get-ConfigValue("Config.debug")) -eq $true) {
+    if ((get-ConfigValue("Config.debug")) -ne $false ) {
+        Write-Log -Message "Don't forget to delete reg keys ;-)" -Level Debug  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
         Write-Host "SELF DESTROY"
         TIMEOUT 5
     }
     Remove-RegPath
 }
+#------------------------------------------        END MAIN            ---------------------------------------------
 
 
 
 #Write-Warning "An error occurred during YAML import: $($_.Exception.Message)"
-#Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during YAML import: $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+#Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred during YAML import: $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))
 
-#Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile
+#Write-Log -Message "[$($_.Exception.GetType().FullName)] An error occurred : $($_.Exception.Message) - $($_.ScriptStackTrace)" -Level Error  -Path $global:logFile -Setting (get-ConfigValue("Config.debug"))

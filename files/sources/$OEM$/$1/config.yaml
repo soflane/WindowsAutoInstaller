@@ -1,5 +1,6 @@
 Config:
-  #if u want to make pauses between reboots
+  #if u want to make pauses between reboots 
+  # true/false/verbose
   debug: true
 
   install_updates: false
