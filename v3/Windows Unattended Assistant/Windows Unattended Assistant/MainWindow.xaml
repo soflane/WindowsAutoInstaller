@@ -1,0 +1,164 @@
+﻿<Window x:Class="Windows_Unattended_Assistant.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Windows_Unattended_Assistant"
+        mc:Ignorable="d"
+        Title="Windows Unattended Assistant" Height="700" Width="1000">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="650"/>
+            <RowDefinition Height="214.44"/>
+            <RowDefinition Height="44.8"/>
+            <RowDefinition Height="131.2"/>
+            <RowDefinition Height="259.56"/>
+        </Grid.RowDefinitions>
+        <CheckBox Name="CheckBox_Debug" Content="Debug?" HorizontalAlignment="Left" Margin="912,18,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.533,1.744"/>
+        <CheckBox Name="CheckBox_WinUpdates" Content="Install updates" HorizontalAlignment="Left" Margin="26,202,0,0" VerticalAlignment="Top"  IsChecked="True"/>
+        <CheckBox Name="CheckBox_WinUpdatesDrivers" Content="Install Drivers" HorizontalAlignment="Left" Margin="26,222,0,0" VerticalAlignment="Top" IsChecked="True"/>
+        <Button Name="Btn_Go" Content="Create YAML File" HorizontalAlignment="Left" Margin="880,625,0,0" VerticalAlignment="Top" Click="Btn_Go_Click" IsEnabled="False" />
+        <RadioButton Name="Radio_Win10" GroupName="Win_Version" Content="Windows 10" HorizontalAlignment="Left" Margin="128,18,0,0" VerticalAlignment="Top" Click="Radio_Win10_Checked"/>
+        <RadioButton Name="Radio_Win11" GroupName="Win_Version" Content="Windows 11" HorizontalAlignment="Left" Margin="235,18,0,0" VerticalAlignment="Top" IsChecked="True" Click="Radio_Win11_Checked" />
+        <Label Name="Label_WinChoice" Content="Windows Choice :" HorizontalAlignment="Left" Margin="11,12,0,0" VerticalAlignment="Top"/>
+        <RadioButton Name="Radio_WinPro" GroupName="Win_Edition" Content="Pro" HorizontalAlignment="Left" Margin="128,34,0,0" VerticalAlignment="Top" IsChecked="True"/>
+        <RadioButton Name="Radio_WinHome" GroupName="Win_Edition" Content="Home" HorizontalAlignment="Left" Margin="235,34,0,0" VerticalAlignment="Top"/>
+        <Label Name="Label_EditionChoice" Content="Edition Choice :" HorizontalAlignment="Left" Margin="11,28,0,0" VerticalAlignment="Top"/>
+        <ComboBox Name="ComboBox_Language" HorizontalAlignment="Left" Margin="335,14,0,0" VerticalAlignment="Top" Width="120"></ComboBox>
+        <CheckBox Name="CheckBox_64Bit" Content="64-Bit" HorizontalAlignment="Center" Margin="0,15,0,0" VerticalAlignment="Top" IsChecked="True"/>
+        <Label Name="Label_WinManagement" Content="Windows Management" HorizontalAlignment="Left" Margin="12,170,0,0" VerticalAlignment="Top"/>
+        <ComboBox Name="ComboBox_Drives" SelectedIndex="0" ItemsSource="{Binding Combo_Drives}" Text="-- Select USB Device --" IsEditable="True" IsReadOnly="True" HorizontalAlignment="Left" Margin="15,623,0,0"  VerticalAlignment="Top" Width="275" SnapsToDevicePixels="True" AutomationProperties.HelpText="">
+            <ComboBox.ItemContainerStyle>
+                <Style
+            TargetType="ComboBoxItem">
+                    <Setter
+                Property="HorizontalContentAlignment"
+                Value="Left" />
+                    <Setter
+                Property="VerticalContentAlignment"
+                Value="Center" />
+                </Style>
+            </ComboBox.ItemContainerStyle>
+        </ComboBox>
+        <Label Name="Label_PackagesManager" Content="Packages Manager" HorizontalAlignment="Left" Margin="400,271,0,0" VerticalAlignment="Top"/>
+        <CheckBox Name="CheckBox_Chocolatey" Content="Use" HorizontalAlignment="Left" Margin="250,297,0,0" VerticalAlignment="Top" Click="CheckBox_Chocolatey_Click" />
+        <CheckBox Name="CheckBox_WinGet" Content="Use" HorizontalAlignment="Left" Margin="571,297,0,0" VerticalAlignment="Top" IsChecked="True" Click="CheckBox_WinGet_Click"/>
+        <Label Name="Label_Tweaks" Content="Tweaks" HorizontalAlignment="Left" Margin="488,58,0,0" VerticalAlignment="Top"/>
+        <CheckBox Name="CheckBox_DisableEdgeAltTab" Content="Disable Alt+Tab Egde Tabs" HorizontalAlignment="Left" Margin="502,87,0,0" VerticalAlignment="Top" IsChecked="True"/>
+        <CheckBox Name="CheckBox_DisbableMouseHover" Content="Disable MouseHover" HorizontalAlignment="Left" Margin="502,107,0,0" VerticalAlignment="Top" IsChecked="True"/>
+        <CheckBox Name="CheckBox_InstallWSL" Content="Install WSL" HorizontalAlignment="Left" Margin="26,241,0,0" VerticalAlignment="Top" IsChecked="True" Click="CheckBox_WSL_Click"/>
+        <RadioButton Name="Radio_WSL1" GroupName="WSL_Version" Content="v1" HorizontalAlignment="Left" Margin="38,259,0,0" VerticalAlignment="Top" />
+        <RadioButton Name="Radio_WSL2" GroupName="WSL_Version" Content="v2" HorizontalAlignment="Left" Margin="72,259,0,0" VerticalAlignment="Top"  IsChecked="True"/>
+        <Label Name="Label_User" Content="User :" HorizontalAlignment="Left" Margin="19,78,0,0" VerticalAlignment="Top"/>
+        <TextBox Name="Input_UserName" HorizontalAlignment="Left" Margin="91,81,0,0" TextWrapping="Wrap" Text="Soflane" VerticalAlignment="Top" Width="120"/>
+        <Label Name="Label_UserPW" Content="Password :" HorizontalAlignment="Left" Margin="19,121,0,0" VerticalAlignment="Top"/>
+        <PasswordBox Name="Input_UserPw" HorizontalAlignment="Left" Margin="91,125,0,0" VerticalAlignment="Top" Width="120"/>
+        <CheckBox  Name="CheckBox_AskUACPassword" Content="Ask password for elevation?" HorizontalAlignment="Left" Margin="31,148,0,0" VerticalAlignment="Top" />
+        <Label Name="Label_FullName" Content="Full Name :" HorizontalAlignment="Left" Margin="19,99,0,0" VerticalAlignment="Top"/>
+        <TextBox Name="Input_User_FullName" HorizontalAlignment="Left" Margin="91,103,0,0" TextWrapping="Wrap" Text="Soflane" VerticalAlignment="Top" Width="120"/>
+        <Label Name="Label_UserInfos" Content="User Infos" HorizontalAlignment="Left" Margin="11,54,0,0" VerticalAlignment="Top"/>
+        <Label Name="Label_WifiConfig" Content="WiFi Config : " HorizontalAlignment="Left" Margin="214,54,0,0" VerticalAlignment="Top"/>
+        <CheckBox Name="CheckBox_UseWireless" Content="Use Wireless?" HorizontalAlignment="Left" Margin="228,80,0,0" VerticalAlignment="Top" Click="CheckBox_UseWireless_Click"/>
+        <Label Name="Label_WiFIPw" Content="Password :" HorizontalAlignment="Left" Margin="222,118,0,0" VerticalAlignment="Top"/>
+        <PasswordBox Name="Input_WiFiPW" HorizontalAlignment="Left" Margin="296,122,0,0" VerticalAlignment="Top" Width="120"/>
+        <Label Name="Label_SSID" Content="SSID :" HorizontalAlignment="Left" Margin="222,96,0,0" VerticalAlignment="Top"/>
+        <TextBox Name="Input_SSID" HorizontalAlignment="Left" Margin="296,100,0,0" TextWrapping="Wrap" Text="WiFi Name" VerticalAlignment="Top" Width="120"/>
+        <ComboBox Name="ComboBox_WiFiEncryption" Text="Type" IsEditable="True" IsReadOnly="True" HorizontalAlignment="Left" Margin="222,153,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="3">
+            <ComboBoxItem Content="none"/>
+            <ComboBoxItem Content="WEP"/>
+            <ComboBoxItem Content="TKIP"/>
+            <ComboBoxItem Content="AES"/>
+            <ComboBoxItem Content="GCMP256"/>
+            <Label x:Name="Label_Anydesk_Copy" Content="Anydesk Custom parameters" HorizontalAlignment="Left" VerticalAlignment="Top" Width="164"/>
+        </ComboBox>
+        <ComboBox Name="ComboBox_WirelessAuthentication" Text="Authentication" IsEditable="True" IsReadOnly="True" HorizontalAlignment="Left" Margin="354,153,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="5">
+            <ComboBoxItem Content="open"/>
+            <ComboBoxItem Content="shared"/>
+            <ComboBoxItem Content="WPA"/>
+            <ComboBoxItem Content="WPAPSK"/>
+            <ComboBoxItem Content="WPA2"/>
+            <ComboBoxItem Content="WPA2PSK"/>
+            <ComboBoxItem Content="WPA3SAE"/>
+            <ComboBoxItem Content="WPA3ENT192"/>
+            <ComboBoxItem Content="OWE"/>
+        </ComboBox>
+        <CheckBox IsEnabled="False" Name="CheckBox_CreateInstallMedia" Content="Create installer media?" HorizontalAlignment="Left" Margin="550,17,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="Label_ChocoPackages" Content="Choco Packages" HorizontalAlignment="Left" Margin="17,291,0,0" VerticalAlignment="Top"/>
+        <ListView x:Name="Lv_ChocoPackages" IsEnabled="False"  d:ItemsSource="{d:SampleData ItemCount=5}" Margin="14,318,710,32" Height="300" Width="275" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Visible">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Sel." Width="32">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding IsSelected}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Title" Width="100" DisplayMemberBinding="{Binding Name}" />
+                    <GridViewColumn Header="Category" Width="150" DisplayMemberBinding="{Binding Category}" />
+                    <GridViewColumn Header="AppID" Width="150" DisplayMemberBinding="{Binding Id}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Label x:Name="Label_WinGetPackages" Content="WinGet Packages" HorizontalAlignment="Left" Margin="335,292,0,0" VerticalAlignment="Top"/>
+        <ListView x:Name="Lv_WinGetPackages" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="336,318,389,32" Height="300" Width="275" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="False" MaxHeight="300">
+            <ListView.View>
+                <GridView x:Name="gridview" AllowsColumnReorder="True">
+                    <GridViewColumn Header="Sel." Width="32">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding IsSelected}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Title" Width="100" DisplayMemberBinding="{Binding Name}" />
+                    <GridViewColumn Header="Category" Width="150" DisplayMemberBinding="{Binding Category}" />
+                    <GridViewColumn Header="AppID" Width="150" DisplayMemberBinding="{Binding Id}" />
+
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Label x:Name="Label_WinStorePackages" Content="Windows Store Packages" HorizontalAlignment="Left" Margin="658,292,0,0" VerticalAlignment="Top" />
+        <ListView x:Name="Lv_WinStorePackages" IsEnabled="False" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="658,318,67,32" Height="300" Width="275" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Visible">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Sel." Width="32">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding IsSelected}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Title" Width="100" DisplayMemberBinding="{Binding Name}" />
+                    <GridViewColumn Header="Category" Width="150" DisplayMemberBinding="{Binding Category}" />
+                    <GridViewColumn Header="AppID" Width="150" DisplayMemberBinding="{Binding Id}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <CheckBox x:Name="CheckBox_WinStore" Content="Use" HorizontalAlignment="Left" Margin="893,297,0,0" VerticalAlignment="Top" Click="CheckBox_WinStore_Click"/>
+        <TextBox Name="Input_Hostname" HorizontalAlignment="Left" Margin="736,18,0,0" TextWrapping="Wrap" Text="Hostname" VerticalAlignment="Top" Width="120"/>
+        <CheckBox x:Name="CheckBox_UEFI" Content="UEFI" HorizontalAlignment="Left" Margin="474,33,0,0" VerticalAlignment="Top" IsChecked="True"/>
+        <Label Content="Currently not available..." HorizontalAlignment="Left" Margin="550,29,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="Btn_Refresh_USBList" Content="Refresh.." HorizontalAlignment="Left" Margin="297,623,0,0" VerticalAlignment="Top" Click="Btn_Refresh_USBList_Click"  />
+        <CheckBox x:Name="CheckBox_AnyDesk_URL"  Content="URL" HorizontalAlignment="Left" Margin="221,199,0,0" VerticalAlignment="Top"  IsChecked="False" Click="CheckBox_Anydesk_Click"/>
+        <CheckBox x:Name="CheckBox_AnyDesk_PW" Content="Password" HorizontalAlignment="Left" Margin="221,219,0,0" VerticalAlignment="Top"  IsChecked="False" Click="CheckBox_Anydesk_Click"/>
+        <Label x:Name="Label_Anydesk" Content="Anydesk Custom parameters" HorizontalAlignment="Left" Margin="210,170,0,0" VerticalAlignment="Top" Width="164"/>
+        <PasswordBox x:Name="Input_AnyDesk_PW" HorizontalAlignment="Left" Margin="296,219,0,0" IsEnabled="False" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="Input_AnyDesk_URL" HorizontalAlignment="Left" Margin="296,197,0,0" TextWrapping="Wrap" IsEnabled="False" VerticalAlignment="Top" Width="120" />
+        <Label x:Name="Label_Tweaks_SearchBox" Content="Taskbar Search" HorizontalAlignment="Left" Margin="496,126,0,0" VerticalAlignment="Top" Width="95"/>
+        <ComboBox x:Name="ComboBox_Tweaks_SearchBox" Text="select" IsEditable="True" IsReadOnly="True" HorizontalAlignment="Left" Margin="612,129,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="3">
+            <ComboBoxItem Content="button" IsSelected="True"/>
+            <ComboBoxItem Content="bar"/>
+            <ComboBoxItem Content="off"/>
+        </ComboBox>
+        <Label x:Name="Label_Tweaks_NewsInterest"       IsEnabled="False" Content="News and Interest" HorizontalAlignment="Left" Margin="496,151,0,0" VerticalAlignment="Top" Width="111"/>
+        <ComboBox x:Name="ComboBox_Tweaks_NewsInterest" IsEnabled="False" Text="select" IsEditable="True" IsReadOnly="True" HorizontalAlignment="Left" Margin="612,154,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="3">
+            <ComboBoxItem Content="icon" />
+            <ComboBoxItem Content="text"/>
+            <ComboBoxItem Content="off"/>
+        </ComboBox>
+        <Label Content="wallpaper Currently not available..." HorizontalAlignment="Left" Margin="523,176,0,0" VerticalAlignment="Top"/>
+
+    </Grid>
+</Window>

@@ -1,0 +1,81 @@
+Hostname: HP-soflane
+Config:
+  #if u want to make pauses between reboots 
+  # true/false/verbose
+  debug: true
+  VCLibs_URL: https://shurl.tech/VCLibs.x64
+  WinGet_URL: https://aka.ms/getwinget 
+  XAML_Runtime_URL: https://shurl.tech/Microsoft.UI.Xaml
+  
+
+Wireless:
+  Connect: true
+  SSID: WiFi 
+  Password: youknow
+  # choose between 'none' 'WEP' 'TKIP' 'AES' 'GCMP256'
+  Encryption: AES
+  #'open#shared#WPA#WPAPSK#WPA2#WPA2PSK#WPA3SAE#WPA3ENT192#OWE'
+  Authentication: WPA2PSK
+  
+User:
+  Name: soflane
+  Display_Name:  soflane git
+  Password: 
+  Uac_Ask_For_Password: true    
+
+
+Features:
+  
+  Install_Updates: false
+  Install_Drivers: false
+
+  Chocolatey: false
+  Winget: false
+  WinStore: false
+
+  WSL: no
+  WSL_Version: 2
+
+  Anydesk_Custom_URL: 
+  Anydesk_Password: 
+
+  # Not working
+  #wsl_distribution: ubuntu
+
+#windows settings 
+Windows_Tweaks:
+  # 'no' for no wallpaper change
+  #wallpaper_path: false
+  Wallpaper_Path: 'C:\Windows\Web\Wallpaper\Custom\screen-center.jpg'
+  #Edge tabs coming into windows alt+tab
+  Edge_Alt_Tab: disable
+  # icon, text, off
+  NewsAndInterest: text
+  # on, off
+  NewsAndInterest_MouseHover: off
+  # button, bar, off
+  SearchBox_Taskbar: button
+
+wingetApps:
+  - Adobe.Acrobat.Reader.64-bit               
+  - 7zip.7zip                                 
+  - Mozilla.Firefox                           
+  - Google.Chrome    
+
+  - Apache.OpenOffice
+  - VideoLAN.VLC                              
+  - WhatsApp.WhatsApp   
+  
+winStoreApps:                      
+  - 9NBLGGH4XXVW                              
+  - Spotify.Spotify   
+  - 9ncbcszsjrsb  
+  - 9PG8DNKL06M6 
+
+  
+chocoApps:
+  - advanced-ip-scanner                       
+  - core.extension                 
+  - hdtune                                    
+  - unifiedremote                             
+

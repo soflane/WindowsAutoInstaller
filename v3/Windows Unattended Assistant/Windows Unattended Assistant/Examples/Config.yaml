@@ -1,0 +1,87 @@
+Hostname: Hostname
+Config:
+  debug: false
+  VCLibs_URL: https://shurl.tech/VCLibs.x64
+  WinGet_URL: https://aka.ms/getwinget
+  XAML_Runtime_URL: https://shurl.tech/Microsoft.UI.Xaml
+Wireless:
+  connect: false
+  SSID: WiFi Name
+  Password: ''
+  Encryption: AES
+  Authentication: WPA2PSK
+User:
+  Name: Soflane
+  Display_Name: Soflane
+  Password: ''
+  Uac_Ask_For_Password: false
+Features:
+  Install_Updates: true
+  Install_Drivers: true
+  Chocolatey: false
+  Winget: true
+  WinStore: false
+  WSL: true
+  WSL_Version: 2
+  Anydesk_Custom_URL: ''
+  Anydesk_Password: ''
+ChocoApps:
+- advanced-ip-scanner
+- hdtune
+- unifiedremote
+WingetApps:
+- Apple.iTunes
+- Discord.Discord
+- Mp3tag.Mp3tag
+- Plex.Plex
+- PowerSoftware.AnyBurn
+- Telegram.TelegramDesktop
+- VideoLAN.VLC
+- WhatsApp.WhatsApp
+- Zoom.Zoom
+- AnyDeskSoftwareGmbH.AnyDesk
+- TeamViewer.TeamViewer
+- TeamViewer.TeamViewer.Host
+- Piriform.CCleaner
+- Malwarebytes.Malwarebytes
+- MiniTool.PartitionWizard.Free
+- Fork.Fork
+- KDE.Falkon
+- Insecure.Nmap
+- Notepad++.Notepad++
+- Microsoft.VisualStudioCode
+- Microsoft.PowerToys
+- PuTTY.PuTTY
+- TimKosse.FileZillaClient
+- Famatech.AdvancedIPScanner
+- Typora.Typora
+- WiresharkFoundation.Wireshark
+- WinMerge.WinMerge
+- WinDirStat.WinDirStat
+- Microsoft.dotnetRuntime.6-x64
+- Microsoft.dotnetRuntime.5-x86
+- Microsoft.dotnetRuntime.5-x64
+- Microsoft.dotnetRuntime.5-arm64
+- Microsoft.dotnetRuntime.3-x86
+- Microsoft.dotnetRuntime.3-x64
+- Microsoft.dotNetFramework
+- Python.Python.3.8
+- Python.Python.3.7
+- Python.Python.3.6
+- Python.Python.3.5
+- Python.Python.3.4
+- Python.Python.3.3
+- Git.Git
+- Lenovo.SystemUpdate
+- Logitech.Options
+- Valve.Steam
+- EpicGames.EpicGamesLauncher
+- ElectronicArts.EADesktop
+- DominikReichl.KeePass
+- Transmission.Transmission
+WinStoreApps:
+- 9NBLGGH4XXVW
+- Spotify.Spotify
+- 9ncbcszsjrsb
+- 9PG8DNKL06M6
+- 9NVMNJCR03XV

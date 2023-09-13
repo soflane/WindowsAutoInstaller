@@ -1,0 +1,26 @@
+<apps>
+	<app>
+		<name>Choco Core Extension</name>
+		<category>Core</category>
+		<id>core.extension</id>
+		<enabled>True</enabled>
+	</app>
+	<app>
+		<name>Advanced IP Scanner</name>
+		<category>Tools</category>
+		<id>advanced-ip-scanner </id>
+		<enabled>True</enabled>
+	</app>
+	<app>
+		<name>HD Tune</name>
+		<category>Tools</category>
+		<id>hdtune</id>
+		<enabled>True</enabled>
+	</app>
+	<app>
+		<name>Unified Remote</name>
+		<category>Tools</category>
+		<id>unifiedremote</id>
+		<enabled>True</enabled>
+	</app>
+</apps>

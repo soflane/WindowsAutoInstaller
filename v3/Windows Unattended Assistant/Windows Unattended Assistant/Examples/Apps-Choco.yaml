@@ -1,0 +1,15 @@
+---
+Core:
+  - id: core.extension
+    Name: Choco Core Extension
+    Enabled: false
+Tools:
+  - id: advanced-ip-scanner           
+    Name: Advanced IP Scanner
+    Enabled: yes
+  - id: hdtune        
+    Name: HD Tune
+    Enabled: True
+  - id: unifiedremote 
+    Name: Unified Remote
+    Enabled: True

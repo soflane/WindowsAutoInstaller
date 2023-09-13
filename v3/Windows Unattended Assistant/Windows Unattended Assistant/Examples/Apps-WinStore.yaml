@@ -1,0 +1,22 @@
+﻿---
+Basic Apps:
+- id: 9NBLGGH4XXVW             
+  Name: Trello
+  Enabled: true
+  Category: Basic Apps
+- id: Spotify.Spotify  
+  Name: Spotify
+  Enabled: true
+  Category: Basic Apps
+- id: 9ncbcszsjrsb             
+  Name: Test
+  Enabled: true
+  Category: Basic Apps
+- id: 9PG8DNKL06M6
+  Name: Razer Chroma RGB for Streamers
+  Enabled: true
+  Category: Basic Apps
+- id: 9NVMNJCR03XV
+  Name: MSI Center  
+  Enabled: true
+  Category: Basic Apps

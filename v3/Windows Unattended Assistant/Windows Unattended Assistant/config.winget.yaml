@@ -1,0 +1,274 @@
+---
+#########################
+###### Basic APPS #######
+#########################
+Basic apps:
+- id: Adobe.Acrobat.Reader.64-bit               
+  Name: Adobe Acrobat Reader (64Bit)
+  Enabled: true
+- id: Adobe.Acrobat.Reader.32-bit 
+  Name: Adobe Acrobat Reader (32Bit)
+  Enabled: true
+- id: 7zip.7zip                                 
+  Name: 7-Zip
+  Enabled: true
+- id: Mozilla.Firefox                           
+  Name: Mozzila Firefox
+  Enabled: true
+- id: Google.Chrome    
+  Name: Google Chrome 
+  Enabled: true
+- id: Dropbox.Dropbox                           
+  Name: Dropbox
+  Enabled: true
+- id: Google.Drive                            
+  Name: Google Drive
+  Enabled: true
+- id: Greenshot.Greenshot  
+  Name: Greenshot
+  Enabled: true
+- id: ShareX.ShareX
+  Name: ShareX
+  Enabled: true
+- id: Microsoft.Office                          
+  Name: Microsoft Office
+  Enabled: true
+- id: Microsoft.Teams    
+  Name: Microsoft Teams
+  Enabled: true
+- id: Apache.OpenOffice
+  Name: OpenOffice
+  Enabled: true
+- id: Bitwarden.Bitwarden                                  
+  Name: Bitwarden
+  Enabled: true
+########################################
+######## Communication/media ###########
+########################################
+Media:
+- id: Apple.iTunes                              
+  Name: iTunes
+  Enabled: true
+  Category: Media
+- id: Discord.Discord                           
+  Name: Discord
+  Enabled: true
+  Category: Communication
+- id: Mp3tag.Mp3tag                             
+  Name: Mp3tag
+  Enabled: true
+  Category: Media
+- id: Plex.Plex                                 
+  Name: Plex (Client)
+  Enabled: true
+  Category: Media
+- id: PowerSoftware.AnyBurn                     
+  Name: AnyBurn
+  Enabled: true
+  Category: Media
+- id: Telegram.TelegramDesktop                  
+  Name: Telegram
+  Enabled: true
+  Category: Communication
+- id: VideoLAN.VLC                              
+  Name: 
+  Enabled: true
+  Category: Media
+- id: WhatsApp.WhatsApp     
+  Name: 
+  Enabled: true
+  Category: Communication
+- id: Zoom.Zoom   
+  Name: Zoom
+  Enabled: true
+  Category: Communication                               
+#####################################
+######## Remote Softwares ###########
+#####################################
+Remote software:
+- id: AnyDeskSoftwareGmbH.AnyDesk              
+  Name: 
+  Enabled: true
+  Category: Remote Desktop 
+- id: TeamViewer.TeamViewer
+  Name: 
+  Enabled: true
+  Category: Remote Desktop 
+- id: TeamViewer.TeamViewer.Host
+  Name: 
+  Enabled: true
+  Category: Remote Desktop 
+##################################
+######## Admin tools ###########
+##################################
+Windows Tools:
+- id: Piriform.CCleaner                         
+  Name: 
+  Enabled: true
+  Category: Windows Tools 
+- id: Malwarebytes.Malwarebytes
+  Name: 
+  Enabled: true
+  Category: Windows Tools      
+- id: MiniTool.PartitionWizard.Free
+  Name: 
+  Enabled: true
+  Category: Admin Tools            
+#################################
+######## DevOps tools ###########
+#################################
+DevOps Tools:
+- id: Fork.Fork                                 
+  Name: 
+  Enabled: true
+  Category: Dev
+- id: KDE.Falkon                                
+  Name: 
+  Enabled: true
+  Category: Admin Tools
+- id: Insecure.Nmap                             
+  Name: 
+  Enabled: true
+  Category: Dev
+- id: Notepad++.Notepad++                       
+  Name: 
+  Enabled: true
+  Category: Dev
+- id: Microsoft.VisualStudioCode                
+  Name: 
+  Enabled: true
+  Category: Dev
+- id: Microsoft.PowerToys  
+  Name: 
+  Enabled: true
+  Category: Dev
+- id: PuTTY.PuTTY                               
+  Name: 
+  Enabled: true
+  Category: Dev
+- id: TimKosse.FileZillaClient                  
+  Name: 
+  Enabled: true
+  Category: Dev
+- id: Famatech.AdvancedIPScanner
+  Name: 
+  Enabled: true
+  Category: Dev
+- id: Typora.Typora                             
+  Name: 
+  Enabled: true
+  Category: Dev
+- id: WiresharkFoundation.Wireshark             
+  Name: 
+  Enabled: true
+  Category: Dev
+- id: WinMerge.WinMerge     
+  Name: 
+  Enabled: true
+  Category: Dev
+- id: WinDirStat.WinDirStat
+  Name: 
+  Enabled: true
+  Category: Dev        
+
+- id: Microsoft.dotnetRuntime.6-x64             
+  Name: 
+  Enabled: true
+  Category: Dev
+- id: Microsoft.dotnetRuntime.5-x86             
+  Name: 
+  Enabled: true
+  Category: Dev
+- id: Microsoft.dotnetRuntime.5-x64             
+  Name: 
+  Enabled: true
+  Category: Dev
+- id: Microsoft.dotnetRuntime.5-arm64           
+  Name: 
+  Enabled: true
+  Category: Dev
+- id: Microsoft.dotnetRuntime.3-x86             
+  Name: 
+  Enabled: true
+  Category: Dev
+- id: Microsoft.dotnetRuntime.3-x64             
+  Name: 
+  Enabled: true
+  Category: Dev
+- id: Microsoft.dotNetFramework
+  Name: 
+  Enabled: true
+  Category: Dev                 
+
+
+
+- id: Python.Python.3.8                 
+  Name: 
+  Enabled: true
+  Category: Dev
+- id: Python.Python.3.7
+  Name: 
+  Enabled: true
+  Category: Dev
+- id: Python.Python.3.6
+  Name: 
+  Enabled: true
+  Category: Dev
+- id: Python.Python.3.5
+  Name: 
+  Enabled: true
+  Category: Dev
+- id: Python.Python.3.4
+  Name: 
+  Enabled: true
+  Category: Dev
+- id: Python.Python.3.3
+  Name: 
+  Enabled: true
+  Category: Dev
+- id: Git.Git
+  Name: 
+  Enabled: true
+  Category: Dev 
+
+
+######################################
+######## Hardware Specific ###########
+######################################
+Brand Specific:
+- id: Lenovo.SystemUpdate  
+  Name: 
+  Enabled: true
+  Category: Brand Specific
+- id: Logitech.Options
+  Name: 
+  Enabled: true
+  Category: Brand Specific                          
+
+##########################
+######## Other ###########
+##########################
+Games:                         
+- id: Valve.Steam          
+  Name: 
+  Enabled: true
+  Category: Games
+- id: EpicGames.EpicGamesLauncher  
+  Name: 
+  Enabled: true
+  Category: Games
+- id: ElectronicArts.EADesktop                     
+  Name: 
+  Enabled: true
+  Category: Games
+Other:
+- id: DominikReichl.KeePass 
+  Name: 
+  Enabled: true
+  Category: Other
+
+
+- id: Transmission.Transmission
+  Name: 
+  Enabled: true
+  Category: Downloaders
